@@ -5,8 +5,6 @@ export default () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
-  const total = () => good + neutral + bad;
-
   return (
     <div>
       <h1>Give Feedback! 🗒️</h1>
@@ -17,15 +15,27 @@ export default () => {
       </div>
 
       <h1>Statistics</h1>
-      <div>
-        <p>good: {good}</p>
-        <p>neutral: {neutral}</p>
-        <p>bad: {bad}</p>
-        <br />
-        <p>total: {total()}</p>
-        <p>average: {total() ? ((good - bad) / total()).toFixed(2) : 0}</p>
-        <p>positive: {total() ? (good / total() * 100).toFixed(2) : ""}%</p>
-      </div>
+      <Statistics {...{ good, neutral, bad }} />
+    </div>
+  );
+};
+
+const Statistics = ({ good, neutral, bad }) => {
+  const total = () => good + neutral + bad;
+  const average = () => ((good - bad) / total()).toFixed(2);
+  const positive = () => ((good / total()) * 100).toFixed(2);
+
+  if (!total()) return <p>No feedback given</p>;
+
+  return (
+    <div>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
+      <br />
+      <p>total: {total()}</p>
+      <p>average: {average()}</p>
+      <p>positive: {positive()}%</p>
     </div>
   );
 };
