@@ -1,34 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default () => {
+  const [contacts, setContacts] = useState([]);
+  const [newName, setNewName] = useState("");
+
+  const addContact = (e) => {
+    e.preventDefault();
+    setContacts(contacts.concat({ name: newName}))
+    console.log(newName);
+  };
+
+  const handleNameChange = (e) => {
+    setNewName(e.target.value);
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addContact}>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          value={newName}
+          onChange={handleNameChange}
+        />
+        <button type="submit">Save</button>
+      </form>
+      <h2>Numbers</h2>
+      <Contacts contacts={contacts} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+const Contacts = ({ contacts }) => (
+  <ul>
+    {contacts.map((person) => (
+      <li key={person.name}>{person.name}</li>
+    ))}
+  </ul>
+);
